@@ -18,13 +18,8 @@ while confirmar not in ["si", "no"]:
     confirmar = str(input(f"\nConfirma que deseas agregar {CantidadProducto} unidades del producto '{nombreProducto}' al inventario? (si/no): ")).lower() 
 
 if confirmar == "si": 
-        costoTotal = (PrecioUnitarioProducto * CantidadProducto)
-        print(f"\nProducto ingresado exictosamente.\n\n Nombre del producto: {nombreProducto}\n Precio unitario: ${PrecioUnitarioProducto}\n Cantidad ingresada: {CantidadProducto}\n Costo total: ${costoTotal}\n")
+    costoTotal = (PrecioUnitarioProducto * CantidadProducto)
+    print(f"\nProducto ingresado exictosamente.\n\n Nombre del producto: {nombreProducto}\n Precio unitario: ${PrecioUnitarioProducto}\n Cantidad ingresada: {CantidadProducto}\n Costo total: ${costoTotal}\n")
 else: 
-        print("\nOperación cancelada. No se realizaron cambios en el inventario.\n")
-
-
-
-
-
+    print("\nOperación cancelada. No se realizaron cambios en el inventario.\n")
 
