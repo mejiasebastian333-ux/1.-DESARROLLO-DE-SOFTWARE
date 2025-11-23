@@ -1,7 +1,6 @@
 # ---------------------------------------------
 # Función para agregar productos al inventario
 # ---------------------------------------------
-
 def agregar_producto(inventario):
     print("\n")
     print("--- Agregar producto ---\n")
@@ -107,7 +106,7 @@ def calcular_estadisticas(inventario):
 
     print("\n")
     print(f"Valor total del inventario: ${valor_total_inventario:,.0f}")
-    print(f"Cantidad total de productos: {cantidad_total_productos_inventario}\n")
+    print(f"Cantidad total de productos: {cantidad_total_productos_inventario} unidades")
 
 
 # ---------------------------------------------
