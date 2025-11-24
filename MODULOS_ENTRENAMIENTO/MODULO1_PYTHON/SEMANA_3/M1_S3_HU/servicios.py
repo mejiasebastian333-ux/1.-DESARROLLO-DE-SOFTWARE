@@ -56,7 +56,7 @@ def agregar_producto(inventario):
 
 
 # ---------------------------------------------
-# Función para mostrar el inventario
+# Mostrar inventario
 # ---------------------------------------------
 def mostrar_inventario(inventario):
     print("\n--- Inventario ---\n")
@@ -76,7 +76,7 @@ def mostrar_inventario(inventario):
 
 
 # ---------------------------------------------
-# Función para buscar producto
+# Buscar producto
 # ---------------------------------------------
 def buscar_producto(inventario):
     print("\n--- Buscar producto ---\n")
@@ -100,7 +100,7 @@ def buscar_producto(inventario):
 
 
 # ---------------------------------------------
-# Función para actualizar un producto
+# Actualizar producto
 # ---------------------------------------------
 def actualizar_producto(inventario):
     print("\n--- Actualizar producto ---\n")
@@ -120,7 +120,6 @@ def actualizar_producto(inventario):
             print(f"3. Cantidad actual : {producto['Cantidad del producto']}")
             print(f"Total actual       : ${producto['Total']:,.0f}\n")
 
-            # Bucle para elegir opción
             while True:
                 print("¿Qué deseas actualizar?")
                 print("1. Nombre")
@@ -169,7 +168,6 @@ def actualizar_producto(inventario):
                             print("Ingresa un número válido.")
                     break
 
-                # Cancelar
                 elif opcion == "4":
                     print("\nOperación cancelada.\n")
                     return
@@ -183,7 +181,7 @@ def actualizar_producto(inventario):
 
 
 # ---------------------------------------------
-# Función para eliminar un producto
+# Eliminar producto
 # ---------------------------------------------
 def eliminar_producto(inventario):
     print("\n--- Eliminar producto ---\n")
@@ -220,7 +218,7 @@ def eliminar_producto(inventario):
 
 
 # ---------------------------------------------
-# Función para estadísticas
+# Estadísticas
 # ---------------------------------------------
 def calcular_estadisticas(inventario):
     print("\n--- Estadísticas ---\n")

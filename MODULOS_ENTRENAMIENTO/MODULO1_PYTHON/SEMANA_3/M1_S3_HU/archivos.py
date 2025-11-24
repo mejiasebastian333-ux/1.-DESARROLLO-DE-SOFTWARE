@@ -1,4 +1,3 @@
-
 # ---------------------------------------------
 # Guardar CSV
 # ---------------------------------------------
@@ -16,8 +15,17 @@ def guardar_csv(inventario, ruta, incluir_header=True):
 
     # Validar inventario vacío
     if not inventario:
-        print("\nNo se puede guardar: el inventario está vacío.\n")
-        return
+        print("\nEl inventario está vacío.")
+        confirmar = input("¿Deseas guardar un archivo vacío? (si/no): ").lower()
+
+        while confirmar not in ["si", "no"]:
+            confirmar = input("Respuesta inválida. Escribe 'si' o 'no': ").lower()
+
+        if confirmar == "no":
+            print("\nOperación cancelada.\n")
+            return
+        else:
+            print("\nGuardando archivo vacío...\n")
 
     try:
         with open(ruta, mode="w", newline="", encoding="utf-8") as archivo:
@@ -48,8 +56,6 @@ def guardar_csv(inventario, ruta, incluir_header=True):
 # ---------------------------------------------
 # Cargar CSV
 # ---------------------------------------------
-import csv
-
 def cargar_csv(ruta, inventario):
     print("\n--- Cargar archivo CSV ---\n")
 
@@ -70,10 +76,10 @@ def cargar_csv(ruta, inventario):
             encabezado_esperado = ["nombre", "precio", "cantidad"]
             if [col.lower().strip() for col in encabezado] != encabezado_esperado:
                 print("\nError: El encabezado del CSV no es válido. Debe ser:")
-                print("nombre,precio,cantidad")
+                print("nombre,precio,cantidad\n")
                 return inventario
 
-            # Validar filas una por una
+            # Validar filas
             for fila in lector:
                 if len(fila) != 3:
                     filas_invalidas += 1
@@ -100,7 +106,7 @@ def cargar_csv(ruta, inventario):
                     continue
 
     except FileNotFoundError:
-        print(f"\nError: No se encontró el archivo '{ruta}'.")
+        print(f"\nError: No se encontró el archivo '{ruta}'.\n")
         return inventario
 
     except UnicodeDecodeError:
@@ -108,31 +114,40 @@ def cargar_csv(ruta, inventario):
         return inventario
 
     except Exception as e:
-        print(f"\nError inesperado: {e}")
+        print(f"\nError inesperado: {e}\n")
         return inventario
 
     # Si no se cargó nada válido
     if not productos_cargados:
-        print("\nNo se cargó ningún producto válido desde el CSV.\n")
+        print("\nNo se encontró ningún producto válido en el archivo.")
+        print("El inventario no será modificado.\n")
         return inventario
 
-    # Preguntar sobrescritura o fusión
+    # Muestra resumen y pregunta
     print(f"\nProductos válidos encontrados: {len(productos_cargados)}")
     print(f"Filas inválidas omitidas: {filas_invalidas}\n")
 
     opcion = input("\n¿Sobrescribir inventario actual? (S/N): ").strip().upper()
 
     if opcion == "S":
-        inventario = productos_cargados
-        print("\nInventario sobrescrito correctamente.\n")
-        print(f"Productos cargados: {len(productos_cargados)}")
-        print(f"Filas inválidas omitidas: {filas_invalidas}")
-        return inventario
+        nuevo_inventario = []
+        for p in productos_cargados:
+            nuevo_inventario.append({
+                "Nombre del producto": p["nombre"],
+                "Precio del producto": p["precio"],
+                "Cantidad del producto": p["cantidad"],
+                "Total": p["precio"] * p["cantidad"]
+            })
 
-    # Si decide fusionar
+        print("\nInventario sobrescrito correctamente.\n")
+        return nuevo_inventario
+
+    # Fusionar inventarios
     print("\nFusionando inventarios...\n")
 
-    inventario_por_nombre = {p["nombre"].lower(): p for p in inventario}
+    inventario_por_nombre = {
+        p["Nombre del producto"].lower(): p for p in inventario
+    }
 
     for producto in productos_cargados:
         nombre = producto["nombre"].lower()
@@ -140,22 +155,28 @@ def cargar_csv(ruta, inventario):
         if nombre in inventario_por_nombre:
             existente = inventario_por_nombre[nombre]
 
-            # Política de fusión:
-            # 1. Sumar cantidades
-            # 2. Si el precio difiere, actualizar al nuevo precio
-            existente["cantidad"] += producto["cantidad"]
-            if existente["precio"] != producto["precio"]:
-                existente["precio"] = producto["precio"]
-        else:
-            inventario_por_nombre[nombre] = producto
+            existente["Cantidad del producto"] += producto["cantidad"]
 
-    inventario = list(inventario_por_nombre.values())
+            if existente["Precio del producto"] != producto["precio"]:
+                existente["Precio del producto"] = producto["precio"]
+
+            existente["Total"] = (
+                existente["Precio del producto"] *
+                existente["Cantidad del producto"]
+            )
+
+        else:
+            inventario_por_nombre[nombre] = {
+                "Nombre del producto": producto["nombre"],
+                "Precio del producto": producto["precio"],
+                "Cantidad del producto": producto["cantidad"],
+                "Total": producto["precio"] * producto["cantidad"]
+            }
+
+    final = list(inventario_por_nombre.values())
 
     print("\nInventario fusionado correctamente.\n")
     print(f"Productos añadidos/actualizados: {len(productos_cargados)}")
-    print(f"Filas inválidas omitidas: {filas_invalidas}")
+    print(f"Filas inválidas omitidas: {filas_invalidas}\n")
 
-    return inventario
-
-
-
+    return final

@@ -1,8 +1,8 @@
 from servicios import ( 
     agregar_producto, mostrar_inventario, buscar_producto,
-    actualizar_producto, eliminar_producto, calcular_estadisticas,
-    guardar_csv, cargar_csv
+    actualizar_producto, eliminar_producto, calcular_estadisticas
 )
+from archivos import guardar_csv, cargar_csv
 
 inventario = []
 
@@ -42,12 +42,10 @@ while True:
         calcular_estadisticas(inventario)
 
     elif opcion == "7":
-        # Pedir ruta al usuario
         ruta = input("\nIngresa la ruta del archivo CSV a guardar: ")
         guardar_csv(inventario, ruta)
 
     elif opcion == "8":
-        # Pedir ruta al usuario
         ruta = input("\nIngresa la ruta del archivo CSV a cargar: ")
         inventario = cargar_csv(ruta, inventario)
 
